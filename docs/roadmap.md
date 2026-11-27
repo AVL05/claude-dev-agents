@@ -10,6 +10,8 @@ This roadmap describes intended work. A milestone is complete only when its acce
 - [x] Define hybrid autonomy and approval boundaries.
 - [x] Define evidence-first evaluation principles.
 - [x] Add a preview marketplace manifest and initial plugin package manifests.
+- [x] Define local-scope installation as the default.
+- [x] Define cost-aware delegation tiers and review budgets.
 - [ ] Pass Claude Code's native marketplace/plugin validation and a clean-install test.
 
 ## M1 — Core plugin
@@ -17,8 +19,9 @@ This roadmap describes intended work. A milestone is complete only when its acce
 - [x] Package a Core plugin preview.
 - [x] Add the cross-domain `engineering-director`.
 - [x] Add baseline planning, architecture, general implementation, and code review agents.
+- [x] Add tiered delegation and a default agent-call budget to the Director.
 - [ ] Verify specialist discovery, delegation, and graceful fallback in Claude Code.
-- [ ] Test clean installation, update, and removal.
+- [ ] Test local installation, update, and removal.
 
 ## M2 — Frontend team
 
@@ -26,7 +29,7 @@ This roadmap describes intended work. A milestone is complete only when its acce
 - [x] Add frontend architect, implementer, design reviewer, accessibility auditor, and performance auditor.
 - [x] Keep Premium Frontend Director independent and optional.
 - [ ] Validate agent discovery and delegation from the Core Director.
-- [ ] Evaluate the team with reproducible frontend fixtures.
+- [ ] Evaluate the team with cost-aware frontend fixtures.
 
 ## M3 — Additional domain teams
 
@@ -60,6 +63,8 @@ Implement incrementally, with distinct responsibilities and tests:
 
 - [x] Define baseline-versus-agent-assisted evaluation methodology.
 - [ ] Build repeatable evaluation fixtures and automated checks.
+- [ ] Record always-on and on-invoke token costs for each plugin configuration.
+- [ ] Compare agent invocation budgets against a plain Claude Code baseline.
 - [ ] Publish transparent results, including failures and limitations.
 - [ ] Add CI validation for manifests, agent frontmatter, and package structure.
 - [ ] Publish installation and contribution documentation.
@@ -67,4 +72,4 @@ Implement incrementally, with distinct responsibilities and tests:
 
 ## Release policy
 
-Do not mark a team stable merely because its agent files exist. A team needs clear responsibilities, documented permissions, working installation, at least one reproducible evaluation path, and honest compatibility notes.
+Do not mark a team stable merely because its agent files exist. A team needs clear responsibilities, documented permissions, working installation, at least one reproducible evaluation path, a measured context footprint, and honest compatibility notes.
