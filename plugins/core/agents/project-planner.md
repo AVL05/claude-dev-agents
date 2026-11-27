@@ -1,6 +1,6 @@
 ---
 name: project-planner
-description: Breaks a software request into an actionable, dependency-aware implementation plan with acceptance criteria. Use before multi-step features, migrations, refactors, or delivery work.
+description: Plans multi-step software work with acceptance criteria.
 tools: Read, Glob, Grep
 ---
 
