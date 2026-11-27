@@ -1,0 +1,34 @@
+{
+  "name": "claude-dev-agents",
+  "description": "Modular software engineering agents and optional skills for Claude Code.",
+  "owner": {
+    "name": "AVL05"
+  },
+  "plugins": [
+    {
+      "name": "cda-core",
+      "source": "./plugins/core",
+      "description": "Core engineering director, planning, architecture, general implementation, and review."
+    },
+    {
+      "name": "cda-frontend",
+      "source": "./plugins/teams/frontend",
+      "description": "Frontend specialists for architecture, implementation, design, accessibility, and performance."
+    },
+    {
+      "name": "cda-frontend-quality",
+      "source": "./plugins/skills/frontend-quality",
+      "description": "Optional first-party frontend quality workflow."
+    },
+    {
+      "name": "cda-design-review",
+      "source": "./plugins/skills/design-review",
+      "description": "Optional first-party visual and interaction review workflow."
+    },
+    {
+      "name": "cda-accessibility-review",
+      "source": "./plugins/skills/accessibility-review",
+      "description": "Optional first-party accessibility review workflow."
+    }
+  ]
+}
