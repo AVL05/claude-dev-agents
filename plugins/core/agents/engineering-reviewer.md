@@ -1,6 +1,6 @@
 ---
 name: engineering-reviewer
-description: Performs an evidence-based review of code changes for correctness, maintainability, security risks, and regressions. Use before merging or delivering meaningful changes.
+description: Reviews code changes for defects, regressions, and risks.
 tools: Read, Glob, Grep, Bash
 ---
 
