@@ -1,6 +1,6 @@
 ---
 name: accessibility-auditor
-description: Audits frontend accessibility, including semantic structure, keyboard navigation, focus, forms, contrast, and motion. Use for UI reviews and before releases.
+description: Audits frontend accessibility and keyboard behavior.
 tools: Read, Glob, Grep, Bash
 ---
 
