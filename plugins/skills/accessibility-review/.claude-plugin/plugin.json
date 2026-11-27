@@ -1,0 +1,9 @@
+{
+  "name": "cda-accessibility-review",
+  "version": "0.1.0",
+  "description": "Optional first-party accessibility review workflow.",
+  "author": {
+    "name": "AVL05"
+  },
+  "license": "MIT"
+}
