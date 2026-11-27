@@ -19,6 +19,7 @@ It is designed to work with existing projects, not replace their frameworks, too
 
 | Specialist | Responsibility |
 | --- | --- |
+| `frontend-director` | Coordinates specialists, scopes work, and owns final delivery. |
 | `frontend-architect` | Understand the codebase, define boundaries, and plan maintainable frontend changes. |
 | `frontend-implementer` | Implement polished, responsive, production-ready interfaces. |
 | `design-reviewer` | Review visual hierarchy, layout, interaction, and design consistency. |
@@ -26,6 +27,14 @@ It is designed to work with existing projects, not replace their frameworks, too
 | `performance-auditor` | Identify measurable frontend performance issues and prioritize fixes. |
 
 Specialists should be invoked when their expertise is useful; do not force every agent into every task.
+
+## Three-level architecture
+
+1. **Director:** `frontend-director` coordinates substantial frontend work.
+2. **Specialists:** architect, implementer, design reviewer, accessibility auditor, and performance auditor handle bounded tasks.
+3. **Quality control:** the director selects relevant reviews, verifies project checks, and reports unresolved risks.
+
+The director delegates selectively. Small tasks should use fewer agents; independent tasks may run in parallel, while dependent or overlapping edits should be sequenced.
 
 ## Repository layout
 
