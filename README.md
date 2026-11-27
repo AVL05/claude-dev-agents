@@ -1,87 +1,81 @@
 # Claude Dev Agents
 
-A focused, quality-first toolkit of specialized agents, skills, and workflows for Claude Code. The initial release targets **production-grade frontend engineering**: architecture, implementation, visual review, accessibility, and performance.
+**A modular, open-source agent ecosystem for Claude Code across the software development lifecycle.**
 
-> Status: early development. The project is intentionally starting with a small, opinionated frontend team rather than a large collection of generic agents.
+Claude Dev Agents is designed for developers who want to assemble a capable AI engineering team from independently installable components: a shared core, domain teams, technology specialists, and optional skills.
 
-## What this project is
+> **Project status:** early development. The repository currently contains an initial frontend agent prototype and its standards. The modular plugin marketplace, additional teams, installation flows, and evaluation suite are planned work—not yet a released product.
 
-Claude Dev Agents is a reusable repository of Claude Code resources:
+## Project vision
 
-- **Agents** — focused specialists with explicit responsibilities and deliverables.
-- **Skills** — reusable workflows and standards loaded when relevant.
-- **Commands** — repeatable entry points for common engineering tasks.
-- **Quality gates** — review checklists and CI validation to reduce regressions.
+Build a practical engineering system for Claude Code that helps developers plan, implement, review, test, secure, and ship software with clear responsibilities and evidence-based quality control.
 
-It is designed to work with existing projects, not replace their frameworks, tooling, or conventions.
+The project is **Claude Code-only**. It uses Claude Code's native agents, skills, commands, hooks, and plugin marketplace capabilities rather than creating a separate agent runtime.
 
-## Initial specialist team
+## Modular by design
 
-| Specialist | Responsibility |
-| --- | --- |
-| `frontend-director` | Coordinates specialists, scopes work, and owns final delivery. |
-| `frontend-architect` | Understand the codebase, define boundaries, and plan maintainable frontend changes. |
-| `frontend-implementer` | Implement polished, responsive, production-ready interfaces. |
-| `design-reviewer` | Review visual hierarchy, layout, interaction, and design consistency. |
-| `accessibility-auditor` | Audit semantics, keyboard access, focus, forms, and WCAG risks. |
-| `performance-auditor` | Identify measurable frontend performance issues and prioritize fixes. |
+Users should install only what they need:
 
-Specialists should be invoked when their expertise is useful; do not force every agent into every task.
+| Layer | Purpose | Examples |
+| --- | --- | --- |
+| **Core** | Shared orchestration and engineering standards | Engineering Director, project planning, architecture |
+| **Domain teams** | Specialists for areas of software delivery | Frontend, backend, database, QA, security, DevOps, AI engineering |
+| **Technology packs** | Guidance for a concrete language or framework | React/Next.js, Vue/Nuxt, Angular, Svelte, Laravel/PHP, Python/FastAPI |
+| **Skills** | Optional methods and focused workflows | Design direction, testing strategy, accessibility, API design |
 
-## Three-level architecture
+A full-stack setup is a combination of the teams required by a project—not a separate monolithic package with duplicated agents.
 
-1. **Director:** `frontend-director` coordinates substantial frontend work.
-2. **Specialists:** architect, implementer, design reviewer, accessibility auditor, and performance auditor handle bounded tasks.
-3. **Quality control:** the director selects relevant reviews, verifies project checks, and reports unresolved risks.
+### Optional skills stay optional
 
-The director delegates selectively. Small tasks should use fewer agents; independent tasks may run in parallel, while dependent or overlapping edits should be sequenced.
+- Users choose which skills to install and invoke.
+- Third-party skills remain distributed and maintained by their original authors.
+- We do not copy, bundle, or silently install external skills.
+- [Premium Frontend Director](https://github.com/AVL05/premium-frontend-director) remains an independent project and can be installed separately.
+- Agent definitions must remain useful without any optional companion skill.
 
-## Repository layout
+## Three-level operating model
 
-```text
-.claude/
-  agents/             # Specialist agent definitions
-  commands/           # Explicit repeatable workflows
-  skills/             # Reusable domain workflows
-docs/
-  architecture.md
-  quality-standards.md
-.github/workflows/
-  validate.yml
-```
+1. **Director:** understands the request, selects available specialists, plans delegation, and owns the final result.
+2. **Specialists:** perform bounded work in their area of expertise.
+3. **Quality control:** checks acceptance criteria, tests, security, and evidence before delivery.
 
-## Installation
+Quality control is a cross-cutting responsibility. It should activate the checks relevant to the task, not launch every reviewer on every change.
 
-Copy the `.claude/` directory into the root of your project, or clone this repository and selectively copy the resources you need.
+## Hybrid autonomy
 
-Claude Code discovers project-level agents, commands, and skills from the `.claude/` directory. Review each resource and adapt it to the target repository before use.
+Routine, reversible work can proceed autonomously within the user's request. The system must seek approval before high-impact actions such as destructive operations, major architectural changes, new dependencies with meaningful risk, database migrations, production changes, publishing, or deployment.
 
-## Recommended workflow
+## Engineering principles
 
-1. Ask the architect to inspect the existing stack and propose a minimal implementation plan.
-2. Implement in small, reviewable increments.
-3. Run the design reviewer against the actual changed screens and states.
-4. Run accessibility and performance audits where applicable.
-5. Execute the project's own lint, type-check, tests, and build commands.
-6. Review the final diff; never treat an agent's report as proof that a command passed.
+- Inspect the repository and its instructions before making changes.
+- Use only specialists that are available and relevant to the task.
+- Do not invent agents, skills, tools, scripts, test results, or performance metrics.
+- Keep responsibilities narrow and avoid overlapping edits.
+- Prefer the smallest coherent implementation over unnecessary rewrites.
+- Measure quality; do not rely on confident agent self-assessment.
+- Keep the user in control of consequential actions.
+- Make the system useful without mandatory external APIs or paid companion skills.
 
-## Design principles
+## AI engineering, not prompt collection
 
-- **Inspect before changing.** Respect existing architecture, dependencies, naming, and conventions.
-- **Evidence over assumptions.** Distinguish inspected facts, hypotheses, and unverified claims.
-- **No needless rewrites.** Prefer the smallest coherent change.
-- **Quality is functional and visual.** A polished screenshot is not enough if keyboard, responsive, loading, or error states fail.
-- **Accessible by default.** Semantic HTML, visible focus, sufficient contrast, and reduced-motion support are baseline expectations.
-- **Measure before optimizing.** Avoid speculative performance changes.
-- **Honest reporting.** State exactly which checks ran, which passed, and which remain unverified.
+The project's value must come from reliable engineering workflows—not from the number of Markdown agent files. We intend to evaluate agent-assisted work against a plain Claude Code baseline using reproducible tasks, automated checks, review rubrics, and transparent limitations.
 
-## Compatibility
+See [the evaluation strategy](docs/evaluation-strategy.md).
 
-The resources are Markdown-based and intended for Claude Code. Individual features may depend on the Claude Code version and project configuration. Keep project-specific commands and tool permissions under the user's control.
+## Repository documentation
 
-## Contributing
+- [Product vision](docs/product-vision.md)
+- [Modular architecture](docs/architecture.md)
+- [Optional skill integrations](docs/skill-integration.md)
+- [Hybrid autonomy and safety](docs/autonomy-and-safety.md)
+- [Evaluation strategy](docs/evaluation-strategy.md)
+- [Roadmap](docs/roadmap.md)
+- [Frontend quality standards](docs/quality-standards.md)
+- [Contributing](CONTRIBUTING.md)
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/quality-standards.md](docs/quality-standards.md).
+## Development status
+
+The current `.claude/agents/` resources are an early frontend prototype. They are useful for developing and evaluating the first team, but the public marketplace packaging and final installation commands are not ready yet. We will publish installation instructions only after validating the native plugin structure and clean-install experience.
 
 ## License
 
