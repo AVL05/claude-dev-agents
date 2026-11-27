@@ -1,6 +1,6 @@
 ---
 name: frontend-architect
-description: Inspects an existing frontend codebase and plans maintainable, low-risk changes. Use before substantial UI features, architecture changes, or when repository conventions are unclear.
+description: Plans frontend architecture for non-trivial changes.
 tools: Read, Glob, Grep, Bash
 ---
 
