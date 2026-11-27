@@ -1,6 +1,6 @@
 ---
 name: general-engineer
-description: Implements scoped software changes when no more specific domain specialist is installed or needed. Adapts to the repository's actual language, framework, and conventions.
+description: Implements scoped software changes in the detected stack.
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
