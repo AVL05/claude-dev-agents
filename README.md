@@ -2,15 +2,40 @@
 
 **A modular, open-source agent ecosystem for Claude Code across the software development lifecycle.**
 
-Claude Dev Agents is designed for developers who want to assemble a capable AI engineering team from independently installable components: a shared core, domain teams, technology specialists, and optional skills.
+Claude Dev Agents helps developers assemble an AI engineering team from independently installable components: a shared Core, domain teams, technology specialists, and optional skills.
 
-> **Project status:** early development. The repository currently contains an initial frontend agent prototype and its standards. The modular plugin marketplace, additional teams, installation flows, and evaluation suite are planned work—not yet a released product.
+> **Project status:** early preview. The first Core and Frontend plugin packages and three optional first-party skill plugins are present. Claude Code CLI validation and clean-install testing are still pending before a stable release.
 
 ## Project vision
 
 Build a practical engineering system for Claude Code that helps developers plan, implement, review, test, secure, and ship software with clear responsibilities and evidence-based quality control.
 
-The project is **Claude Code-only**. It uses Claude Code's native agents, skills, commands, hooks, and plugin marketplace capabilities rather than creating a separate agent runtime.
+The project is **Claude Code-only**. It uses Claude Code's native agents, skills, commands, hooks, and plugin marketplace rather than creating a separate agent runtime.
+
+## Install from the marketplace
+
+Add the marketplace once:
+
+```text
+/plugin marketplace add AVL05/claude-dev-agents
+```
+
+Install the Core and only the teams you need:
+
+```text
+/plugin install cda-core@claude-dev-agents
+/plugin install cda-frontend@claude-dev-agents
+```
+
+Optional first-party skill plugins can be installed independently:
+
+```text
+/plugin install cda-frontend-quality@claude-dev-agents
+/plugin install cda-design-review@claude-dev-agents
+/plugin install cda-accessibility-review@claude-dev-agents
+```
+
+These commands describe the current preview package names. Before a stable release, validate the marketplace locally with `claude plugin validate .` and complete a clean installation test in Claude Code. The GitHub Actions workflow validates marketplace JSON, plugin paths, names, and component frontmatter; it does not replace Claude Code's own validator or a real installation test.
 
 ## Modular by design
 
@@ -18,20 +43,21 @@ Users should install only what they need:
 
 | Layer | Purpose | Examples |
 | --- | --- | --- |
-| **Core** | Shared orchestration and engineering standards | Engineering Director, project planning, architecture |
-| **Domain teams** | Specialists for areas of software delivery | Frontend, backend, database, QA, security, DevOps, AI engineering |
+| **Core** | Shared orchestration and baseline engineering capabilities | Engineering Director, project planning, architecture, general engineering |
+| **Domain teams** | Specialists for software disciplines | Frontend, backend, database, QA, security, DevOps, AI engineering |
 | **Technology packs** | Guidance for a concrete language or framework | React/Next.js, Vue/Nuxt, Angular, Svelte, Laravel/PHP, Python/FastAPI |
 | **Skills** | Optional methods and focused workflows | Design direction, testing strategy, accessibility, API design |
 
-A full-stack setup is a combination of the teams required by a project—not a separate monolithic package with duplicated agents.
+A full-stack setup is a combination of the teams required by a project—not a separate monolithic agent with duplicated responsibilities.
 
 ### Optional skills stay optional
 
 - Users choose which skills to install and invoke.
+- First-party skills from this marketplace are separate plugins.
 - Third-party skills remain distributed and maintained by their original authors.
 - We do not copy, bundle, or silently install external skills.
 - [Premium Frontend Director](https://github.com/AVL05/premium-frontend-director) remains an independent project and can be installed separately.
-- Agent definitions must remain useful without any optional companion skill.
+- Agent definitions must remain useful without optional companion skills.
 
 ## Three-level operating model
 
@@ -62,7 +88,19 @@ The project's value must come from reliable engineering workflows—not from the
 
 See [the evaluation strategy](docs/evaluation-strategy.md).
 
-## Repository documentation
+## Current plugins
+
+| Plugin | Contents | Installation |
+| --- | --- | --- |
+| `cda-core` | Engineering Director, planner, architect, general engineer, reviewer | Recommended base |
+| `cda-frontend` | Frontend architecture, implementation, design, accessibility, performance | Optional domain team |
+| `cda-frontend-quality` | Frontend quality skill | Optional |
+| `cda-design-review` | Visual review skill | Optional |
+| `cda-accessibility-review` | Accessibility review skill | Optional |
+
+Additional teams and technology packs will be added only after their responsibilities and workflows are validated.
+
+## Documentation
 
 - [Product vision](docs/product-vision.md)
 - [Modular architecture](docs/architecture.md)
@@ -73,9 +111,17 @@ See [the evaluation strategy](docs/evaluation-strategy.md).
 - [Frontend quality standards](docs/quality-standards.md)
 - [Contributing](CONTRIBUTING.md)
 
-## Development status
+## Local validation
 
-The current `.claude/agents/` resources are an early frontend prototype. They are useful for developing and evaluating the first team, but the public marketplace packaging and final installation commands are not ready yet. We will publish installation instructions only after validating the native plugin structure and clean-install experience.
+From the repository root:
+
+```bash
+claude plugin validate .
+claude plugin validate ./plugins/core
+claude plugin validate ./plugins/teams/frontend
+```
+
+Then test a real installation in a clean Claude Code profile. See the [official plugin creation documentation](https://code.claude.com/docs/en/plugins/create) and [marketplace documentation](https://code.claude.com/docs/en/plugins/create-marketplace).
 
 ## License
 
