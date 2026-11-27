@@ -1,6 +1,6 @@
 ---
 name: frontend-implementer
-description: Implements frontend features and interfaces that fit the existing product, design system, and codebase conventions. Use for hands-on UI implementation after requirements are understood.
+description: Implements frontend features in the existing project stack.
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
