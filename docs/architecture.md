@@ -17,7 +17,19 @@ One public GitHub repository hosts one Claude Code marketplace. The marketplace 
 
 The preview marketplace is defined in `.claude-plugin/marketplace.json`. Every listed plugin has its own `.claude-plugin/plugin.json` manifest and component directories at the plugin root.
 
-## 3. Current package layout
+## 3. Installation scope and opt-in behavior
+
+Plugins must never be enabled globally by default.
+
+- Recommended installation is `--scope local`, which enables the plugin for the current user in the current repository only and records it in `.claude/settings.local.json`.
+- Use `--scope project` only when the repository owner intentionally wants to share the plugin activation with collaborators through committed `.claude/settings.json`.
+- Use `--scope user` only when a user explicitly wants the plugin in every project on their machine.
+- Registering the marketplace adds a catalogue source to user settings; it does not by itself enable the marketplace's plugins or add their agent descriptions to sessions.
+- Users can uninstall or disable each plugin independently.
+
+The install guide must always show local scope first. Never omit the scope flag from default installation commands.
+
+## 4. Current package layout
 
 ```text
 .claude-plugin/
@@ -32,14 +44,8 @@ plugins/
       agents/
   skills/
     frontend-quality/
-      .claude-plugin/plugin.json
-      skills/frontend-quality/SKILL.md
     design-review/
-      .claude-plugin/plugin.json
-      skills/design-review/SKILL.md
     accessibility-review/
-      .claude-plugin/plugin.json
-      skills/accessibility-review/SKILL.md
 docs/
 evaluations/
 .github/workflows/
@@ -47,23 +53,28 @@ evaluations/
 
 Future domain teams and technology packs will be added as independent plugin directories. The current `.claude/` files are retained as a development prototype until plugin installation has been validated; they are not the marketplace's canonical package paths.
 
-## 4. Installation composition
+## 5. Cost-aware execution
 
-- Install `cda-core` for cross-domain orchestration and baseline engineering agents.
-- Install only the domain teams needed for the project, such as `cda-frontend`.
-- Install technology packs only when they add concrete stack-specific value.
-- Install skill plugins independently; users choose which ones they want.
-- Third-party skills remain in their original repositories and under their maintainers' licenses.
-- No team may silently install another plugin or third-party skill.
-- A full-stack setup is assembled from relevant teams, not a duplicated monolithic agent.
+An enabled plugin contributes component names and descriptions to Claude's context on every turn. Full agent/skill instructions load when invoked. Therefore, installation scope and delegation policy are both product-level cost controls.
 
-The Core and domain packs should degrade gracefully. The Director must use only specialists actually available in the current Claude Code session.
+- Keep agent descriptions concise and action-specific.
+- Keep optional skills in independent plugins.
+- Avoid installing unused domain teams.
+- Avoid redundant specialist roles and duplicate review work.
+- Prefer direct execution for small changes.
+- Use one implementer for ordinary feature work.
+- Use a planner **or** architect for complex work, not both by default.
+- Use one targeted review pass and one correction pass only for blocker/major findings or failed checks.
+- Default to two concurrent agents; three only for independent tasks.
+- Do not invoke an agent merely to repeat an existing test or summarize already-known context.
 
-## 5. Three-level operating model
+See [cost and efficiency policy](cost-efficiency.md).
+
+## 6. Three-level operating model
 
 ### Level 1 — Director
 
-The Core `engineering-director` is the primary entry point for cross-domain tasks. It translates requests into acceptance criteria, inspects repository instructions and the actual stack, selects installed specialists, sequences dependent work, and owns the final handoff.
+The Core `engineering-director` is the primary entry point for cross-domain tasks. It translates requests into acceptance criteria, inspects repository instructions and the actual stack, selects installed specialists, sequences dependent work, and owns the final handoff. It can handle small changes and ordinary planning itself.
 
 ### Level 2 — Specialists
 
@@ -73,13 +84,13 @@ Specialists own bounded responsibilities and return concrete implementation or e
 
 Quality control is a cross-cutting gate coordinated by the Director. It selects relevant reviewers and objective checks based on risk. A report is not proof that a check passed: record commands run, results observed, and checks not run.
 
-## 6. Technology specialists
+## 7. Technology specialists
 
 The Core and domain teams should be technology-agnostic wherever possible. Technology packs add only the knowledge specific to a framework, runtime, or language.
 
 Examples include React/Next.js, Vue/Nuxt, Angular, Svelte/Astro, Node.js/TypeScript, Laravel/PHP, and Python/FastAPI. Add a pack only when it has a distinct workflow, concrete examples, and evaluation cases.
 
-## 7. Optional skill ecosystem
+## 8. Optional skill ecosystem
 
 Skills are not mandatory dependencies of agent teams. First-party skills may be published as independent plugins in this marketplace. Third-party skills remain independent.
 
@@ -92,13 +103,13 @@ Skills are not mandatory dependencies of agent teams. First-party skills may be 
 
 [Skill integration policy](skill-integration.md) documents the rules. [Premium Frontend Director](https://github.com/AVL05/premium-frontend-director) remains independent.
 
-## 8. Hybrid autonomy and permissions
+## 9. Hybrid autonomy and permissions
 
 Routine, reversible work may proceed within the user's request. Approval is required before destructive actions, consequential architecture changes, risky dependency changes, migrations, production changes, publishing, or deployment.
 
 See [autonomy and safety](autonomy-and-safety.md).
 
-## 9. Collaboration rules
+## 10. Collaboration rules
 
 - Use the minimum useful number of specialists.
 - Give every delegation a goal, acceptance criteria, scope, constraints, file ownership, and expected evidence.
@@ -106,7 +117,7 @@ See [autonomy and safety](autonomy-and-safety.md).
 - Do not invent agent names or assume a team is installed.
 - Keep delegation shallow. The Director remains accountable for integration and final delivery.
 
-## 10. Validation and evaluation
+## 11. Validation and evaluation
 
 The repository CI checks marketplace JSON, plugin manifests, source paths, and component frontmatter. This does not replace `claude plugin validate` or a clean installation test in Claude Code.
 
