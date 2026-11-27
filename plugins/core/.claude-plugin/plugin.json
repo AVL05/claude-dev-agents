@@ -1,0 +1,9 @@
+{
+  "name": "cda-core",
+  "version": "0.1.0",
+  "description": "Core orchestration and baseline software engineering agents.",
+  "author": {
+    "name": "AVL05"
+  },
+  "license": "MIT"
+}
