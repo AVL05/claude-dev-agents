@@ -8,16 +8,16 @@ The system is not a standalone agent runtime, hosted service, or framework gener
 
 ## 2. Distribution model
 
-One public GitHub repository will host one Claude Code marketplace. The marketplace will expose independently installable plugins grouped into four categories:
+One public GitHub repository hosts one Claude Code marketplace. The marketplace exposes independently installable plugins grouped into four categories:
 
 1. **Core plugin** — shared orchestration and baseline engineering capabilities.
 2. **Domain team plugins** — specialists for software disciplines.
 3. **Technology plugins** — framework/language-specific expertise.
 4. **Skill plugins** — optional, focused workflows and methods.
 
-The final marketplace manifest and plugin manifests will be added only after the package layout is validated against the current Claude Code plugin specification.
+The preview marketplace is defined in `.claude-plugin/marketplace.json`. Every listed plugin has its own `.claude-plugin/plugin.json` manifest and component directories at the plugin root.
 
-### Proposed repository layout
+## 3. Current package layout
 
 ```text
 .claude-plugin/
@@ -26,135 +26,88 @@ plugins/
   core/
     .claude-plugin/plugin.json
     agents/
-    commands/
-    skills/
   teams/
     frontend/
       .claude-plugin/plugin.json
       agents/
-      skills/
-    backend/
-    database/
-    quality/
-    security/
-    devops/
-    ai-engineering/
-    mobile/
-    data-engineering/
-  technology/
-    react-nextjs/
-    vue-nuxt/
-    angular/
-    svelte-astro/
-    node-typescript/
-    laravel-php/
-    python-fastapi/
   skills/
-    design-quality/
-    testing-strategy/
-    accessibility/
-    api-design/
+    frontend-quality/
+      .claude-plugin/plugin.json
+      skills/frontend-quality/SKILL.md
+    design-review/
+      .claude-plugin/plugin.json
+      skills/design-review/SKILL.md
+    accessibility-review/
+      .claude-plugin/plugin.json
+      skills/accessibility-review/SKILL.md
 docs/
 evaluations/
-fixtures/
 .github/workflows/
 ```
 
-This is a target layout, not a claim that every directory or plugin already exists. The first implementation will validate the Core and Frontend packages before expanding.
+Future domain teams and technology packs will be added as independent plugin directories. The current `.claude/` files are retained as a development prototype until plugin installation has been validated; they are not the marketplace's canonical package paths.
 
-## 3. Installation composition
+## 4. Installation composition
 
-- Users install the Core plugin and only the domain teams they need.
-- Technology packs add focused guidance for the stack in use.
-- Skill plugins are independent and optional.
-- A full-stack setup is assembled by installing the relevant frontend, backend, database, and quality/security components.
+- Install `cda-core` for cross-domain orchestration and baseline engineering agents.
+- Install only the domain teams needed for the project, such as `cda-frontend`.
+- Install technology packs only when they add concrete stack-specific value.
+- Install skill plugins independently; users choose which ones they want.
+- Third-party skills remain in their original repositories and under their maintainers' licenses.
 - No team may silently install another plugin or third-party skill.
-- Plugin dependencies must be explicit, minimal, and documented. Prefer graceful degradation over mandatory companion dependencies.
+- A full-stack setup is assembled from relevant teams, not a duplicated monolithic agent.
 
-The project will not create duplicate "full-stack" versions of frontend and backend specialists. Cross-domain tasks are coordinated by the Director using the specialists available in the current Claude Code session.
+The Core and domain packs should degrade gracefully. The Director must use only specialists actually available in the current Claude Code session.
 
-## 4. Three-level operating model
+## 5. Three-level operating model
 
 ### Level 1 — Director
 
-The Core `engineering-director` is the primary entry point for cross-domain tasks. It:
-
-- translates the request into acceptance criteria;
-- inspects repository instructions and the actual stack;
-- selects only installed and relevant specialists;
-- sequences dependent work and parallelizes only independent work;
-- defines file ownership and delegation boundaries;
-- integrates specialist reports and owns the final handoff.
-
-A domain-focused director (for example, the existing frontend director prototype) may be retained as a specialist profile or workflow where it adds distinct value. It must not create redundant layers of coordinators.
+The Core `engineering-director` is the primary entry point for cross-domain tasks. It translates requests into acceptance criteria, inspects repository instructions and the actual stack, selects installed specialists, sequences dependent work, and owns the final handoff.
 
 ### Level 2 — Specialists
 
-Specialists own bounded responsibilities and return concrete implementation or evidence. Planned domain teams include:
-
-| Team | Example responsibilities |
-| --- | --- |
-| Frontend | UI implementation, design systems, responsive behavior, accessibility |
-| Backend | APIs, business logic, authentication, integrations |
-| Database | Data modeling, migrations, query performance, data integrity |
-| Quality | Test strategy, unit/integration/E2E testing, regression analysis |
-| Security | Threat modeling, secure coding, dependency and configuration review |
-| DevOps / Platform | CI/CD, deployment configuration, observability, infrastructure |
-| AI Engineering | Model integration, agent workflows, retrieval, tool use, evaluations |
-| Mobile | Mobile application architecture and platform-specific implementation |
-| Data Engineering | Pipelines, data quality, storage and transformation |
-
-Only teams with distinct responsibilities and validated workflows should be added.
+Specialists own bounded responsibilities and return concrete implementation or evidence. Planned teams include frontend, backend, database, quality, security, DevOps/platform, AI engineering, mobile, and data engineering.
 
 ### Level 3 — Quality control
 
-Quality control is a cross-cutting gate coordinated by the Director. It selects relevant reviewers and objective checks based on risk.
+Quality control is a cross-cutting gate coordinated by the Director. It selects relevant reviewers and objective checks based on risk. A report is not proof that a check passed: record commands run, results observed, and checks not run.
 
-Examples:
-- UI changes: visual, responsive, accessibility, and functional checks.
-- API changes: contract, authorization, validation, and integration tests.
-- Database changes: migration safety, integrity, and query checks.
-- AI features: task success, groundedness, tool-use correctness, refusal/safety behavior, and regression evaluations.
-- Deployments: build, configuration, smoke tests, rollback readiness, and explicit approval.
+## 6. Technology specialists
 
-A report is not proof that a check passed. The system records commands run, results observed, and checks not run.
+The Core and domain teams should be technology-agnostic wherever possible. Technology packs add only the knowledge specific to a framework, runtime, or language.
 
-## 5. Technology specialists
+Examples include React/Next.js, Vue/Nuxt, Angular, Svelte/Astro, Node.js/TypeScript, Laravel/PHP, and Python/FastAPI. Add a pack only when it has a distinct workflow, concrete examples, and evaluation cases.
 
-The Core and domain teams should be technology-agnostic wherever possible. Technology packs add only the knowledge that is specific to a framework, runtime, or language.
+## 7. Optional skill ecosystem
 
-Examples include React/Next.js, Vue/Nuxt, Angular, Svelte/Astro, Node.js/TypeScript, Laravel/PHP, and Python/FastAPI.
+Skills are not mandatory dependencies of agent teams. First-party skills may be published as independent plugins in this marketplace. Third-party skills remain independent.
 
-Do not create a separate agent for every minor library. Add a technology pack only when it has a distinct workflow, concrete examples, and evaluation cases.
+- Users decide which skills to install and invoke.
+- Do not copy external skill files, scripts, assets, or documentation into this repository.
+- Do not install or update a skill without user approval.
+- Do not claim a skill was used unless it was actually available and invoked.
+- Agents must retain a useful baseline workflow without optional skills.
+- Avoid preloading every optional skill into every agent.
 
-## 6. Optional skill ecosystem
+[Skill integration policy](skill-integration.md) documents the rules. [Premium Frontend Director](https://github.com/AVL05/premium-frontend-director) remains independent.
 
-Skills are not mandatory dependencies of the agent teams.
+## 8. Hybrid autonomy and permissions
 
-- A user may install a skill from this marketplace, another marketplace, or a compatible external source.
-- The user chooses whether and when to invoke it.
-- External skills remain under their original maintainers and licenses.
-- The project may document tested integrations, but must not copy or automatically install third-party content.
-- Agents must have a useful baseline workflow when optional skills are absent.
-- Do not preload every optional skill into every agent; load only task-relevant knowledge to control context use and avoid conflicting instructions.
-
-[Skill integration policy](skill-integration.md) documents the rules. Premium Frontend Director remains independent at https://github.com/AVL05/premium-frontend-director.
-
-## 7. Hybrid autonomy and permissions
-
-The system may autonomously perform routine, reversible actions within the user's request. Approval is required before destructive actions, consequential architecture changes, risky dependency changes, migrations, external publication, production changes, or deployment.
+Routine, reversible work may proceed within the user's request. Approval is required before destructive actions, consequential architecture changes, risky dependency changes, migrations, production changes, publishing, or deployment.
 
 See [autonomy and safety](autonomy-and-safety.md).
 
-## 8. Collaboration rules
+## 9. Collaboration rules
 
 - Use the minimum useful number of specialists.
-- Give each delegation a goal, acceptance criteria, scope, constraints, file ownership, and expected evidence.
-- Never allow concurrent agents to edit the same files without explicit coordination.
-- Do not invent an agent name or assume a team is installed. If a specialist is unavailable, perform the task within the current capability or report the limitation.
+- Give every delegation a goal, acceptance criteria, scope, constraints, file ownership, and expected evidence.
+- Parallelize only independent work; avoid concurrent edits to the same files.
+- Do not invent agent names or assume a team is installed.
 - Keep delegation shallow. The Director remains accountable for integration and final delivery.
-- Preserve project conventions and avoid unnecessary dependencies or rewrites.
 
-## 9. Current implementation boundary
+## 10. Validation and evaluation
 
-The current repository contains an initial frontend prototype under `.claude/`. This is a development starting point, not the final marketplace layout. The first technical milestone is to validate the native Core + Frontend plugin packaging, installation, agent discovery, and clean removal before adding further domain teams.
+The repository CI checks marketplace JSON, plugin manifests, source paths, and component frontmatter. This does not replace `claude plugin validate` or a clean installation test in Claude Code.
+
+Agent-assisted workflows will be evaluated against a plain Claude Code baseline. See [evaluation strategy](evaluation-strategy.md).
