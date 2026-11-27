@@ -1,6 +1,6 @@
 ---
 name: software-architect
-description: Evaluates software structure, boundaries, data flow, and technical trade-offs. Use for cross-cutting features, architectural decisions, scalability concerns, or significant refactors.
+description: Assesses architecture, boundaries, and technical trade-offs.
 tools: Read, Glob, Grep
 ---
 
