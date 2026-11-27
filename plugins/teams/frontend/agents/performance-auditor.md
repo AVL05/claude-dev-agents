@@ -1,6 +1,6 @@
 ---
 name: performance-auditor
-description: Investigates frontend loading, runtime, rendering, and bundle performance using available project tooling and evidence. Use when performance is a requirement or a change may affect it.
+description: Investigates frontend performance using measurable evidence.
 tools: Read, Glob, Grep, Bash
 ---
 
