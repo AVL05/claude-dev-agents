@@ -1,0 +1,9 @@
+{
+  "name": "cda-design-review",
+  "version": "0.1.0",
+  "description": "Optional first-party visual and interaction review workflow.",
+  "author": {
+    "name": "AVL05"
+  },
+  "license": "MIT"
+}
