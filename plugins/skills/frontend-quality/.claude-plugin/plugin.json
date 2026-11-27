@@ -1,0 +1,9 @@
+{
+  "name": "cda-frontend-quality",
+  "version": "0.1.0",
+  "description": "Optional first-party frontend quality checklist and delivery workflow.",
+  "author": {
+    "name": "AVL05"
+  },
+  "license": "MIT"
+}
