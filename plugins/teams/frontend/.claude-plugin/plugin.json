@@ -1,7 +1,7 @@
 {
   "name": "cda-frontend",
-  "version": "0.1.0",
-  "description": "Frontend specialists for architecture, implementation, design, accessibility, and performance.",
+  "version": "0.1.1",
+  "description": "Optional frontend specialists with cost-aware delegation guidance.",
   "author": {
     "name": "AVL05"
   },
