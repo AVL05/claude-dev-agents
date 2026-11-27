@@ -1,6 +1,6 @@
 ---
 name: design-reviewer
-description: Critically reviews frontend visual design, interaction states, responsive layouts, and design-system consistency. Use after UI implementation or when evaluating a screen.
+description: Reviews frontend visuals, responsive behavior, and interactions.
 tools: Read, Glob, Grep, Bash
 ---
 
