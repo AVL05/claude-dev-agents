@@ -1,4 +1,4 @@
-name: Validate repository
+name: Validate marketplace and plugin packages
 
 on:
   push:
@@ -9,18 +9,79 @@ permissions:
   contents: read
 
 jobs:
-  markdown:
-    name: Validate Markdown resources
+  validate:
+    name: Validate manifests and resources
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Check Markdown files are non-empty
-        shell: bash
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate marketplace, plugin manifests, and component frontmatter
         run: |
-          set -euo pipefail
-          files=$(find . -type f -name '*.md' -not -path './.git/*')
-          test -n "$files"
-          while IFS= read -r file; do
-            test -s "$file"
-          done <<< "$files"
+          python - <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          root = Path(".").resolve()
+          marketplace_path = root / ".claude-plugin" / "marketplace.json"
+          assert marketplace_path.is_file(), "Missing .claude-plugin/marketplace.json"
+
+          marketplace = json.loads(marketplace_path.read_text(encoding="utf-8"))
+          for key in ("name", "owner", "plugins"):
+              assert key in marketplace, f"Marketplace is missing required field: {key}"
+          assert isinstance(marketplace["plugins"], list) and marketplace["plugins"], "Marketplace plugins must be a non-empty array"
+          assert marketplace["owner"].get("name"), "Marketplace owner.name is required"
+
+          seen = set()
+          for entry in marketplace["plugins"]:
+              name = entry.get("name")
+              source = entry.get("source")
+              assert name and source, f"Plugin entry requires name and source: {entry}"
+              assert name not in seen, f"Duplicate marketplace plugin name: {name}"
+              seen.add(name)
+              assert isinstance(source, str) and source.startswith("./"), f"Expected relative plugin source for {name}"
+              assert ".." not in Path(source).parts, f"Parent traversal is not allowed in plugin source: {source}"
+
+              plugin_root = (root / source.removeprefix("./")).resolve()
+              assert plugin_root.is_relative_to(root), f"Plugin source escapes repository: {source}"
+              manifest_path = plugin_root / ".claude-plugin" / "plugin.json"
+              assert manifest_path.is_file(), f"Missing plugin manifest for {name}: {manifest_path}"
+              manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+              assert manifest.get("name") == name, f"Marketplace name and plugin.json name differ for {name}"
+              assert manifest.get("version"), f"Plugin {name} is missing a version"
+              assert manifest.get("description"), f"Plugin {name} is missing a description"
+
+              for agent_path in (plugin_root / "agents").glob("*.md"):
+                  content = agent_path.read_text(encoding="utf-8")
+                  assert content.startswith("---\n"), f"Missing YAML frontmatter: {agent_path}"
+                  frontmatter = content.split("---\n", 2)[1]
+                  assert re.search(r"(?m)^name:\s*\S+", frontmatter), f"Missing agent name: {agent_path}"
+                  assert re.search(r"(?m)^description:\s*.+", frontmatter), f"Missing agent description: {agent_path}"
+
+              for skill_file in plugin_root.glob("skills/*/SKILL.md"):
+                  content = skill_file.read_text(encoding="utf-8")
+                  assert content.startswith("---\n"), f"Missing skill frontmatter: {skill_file}"
+                  frontmatter = content.split("---\n", 2)[1]
+                  assert re.search(r"(?m)^name:\s*\S+", frontmatter), f"Missing skill name: {skill_file}"
+                  assert re.search(r"(?m)^description:\s*.+", frontmatter), f"Missing skill description: {skill_file}"
+
+          markdown_files = list(root.rglob("*.md"))
+          assert markdown_files, "No Markdown documentation found"
+          for path in markdown_files:
+              assert path.stat().st_size > 0, f"Empty Markdown file: {path}"
+
+          print(f"Validated {len(seen)} marketplace plugins and {len(markdown_files)} Markdown files.")
+          PY
+
+      - name: Validate JSON syntax
+        run: |
+          python -m json.tool .claude-plugin/marketplace.json > /dev/null
+          find plugins -name plugin.json -print0 | while IFS= read -r -d '' file; do
+            python -m json.tool "$file" > /dev/null
+          done
