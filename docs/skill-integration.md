@@ -15,6 +15,10 @@ Claude Dev Agents provides specialist agents and engineering workflows. Skills p
 7. **Graceful fallback.** If an optional skill is unavailable, use the team's built-in workflow and report the limitation only when it materially affects the result.
 8. **Compatibility evidence.** Mark integrations as tested only after a reproducible installation and invocation test with a stated Claude Code version.
 
+## First-party skill plugins
+
+The initial marketplace exposes these optional skill plugins independently: `cda-frontend-quality`, `cda-design-review`, and `cda-accessibility-review`. They are not required by the Core or Frontend team plugins.
+
 ## Premium Frontend Director
 
 [Premium Frontend Director](https://github.com/AVL05/premium-frontend-director) is an independent project maintained separately from this repository.
