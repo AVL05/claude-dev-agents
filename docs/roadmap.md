@@ -9,23 +9,24 @@ This roadmap describes intended work. A milestone is complete only when its acce
 - [x] Define the three-level operating model.
 - [x] Define hybrid autonomy and approval boundaries.
 - [x] Define evidence-first evaluation principles.
-- [ ] Validate the target native Claude Code marketplace/plugin layout.
+- [x] Add a preview marketplace manifest and initial plugin package manifests.
+- [ ] Pass Claude Code's native marketplace/plugin validation and a clean-install test.
 
 ## M1 — Core plugin
 
-- [ ] Create and validate the marketplace manifest.
-- [ ] Package a minimal Core plugin.
-- [ ] Implement the cross-domain `engineering-director`.
-- [ ] Add baseline project planning and architecture capabilities.
-- [ ] Verify specialist discovery, delegation, and graceful fallback.
+- [x] Package a Core plugin preview.
+- [x] Add the cross-domain `engineering-director`.
+- [x] Add baseline planning, architecture, general implementation, and code review agents.
+- [ ] Verify specialist discovery, delegation, and graceful fallback in Claude Code.
 - [ ] Test clean installation, update, and removal.
 
 ## M2 — Frontend team
 
-- [ ] Migrate the current frontend prototype into an independently installable plugin.
-- [ ] Finalize frontend architect, implementer, design, accessibility, and performance specialists.
-- [ ] Keep Premium Frontend Director independent and optional.
-- [ ] Validate the team with reproducible frontend fixtures.
+- [x] Package a Frontend team preview.
+- [x] Add frontend architect, implementer, design reviewer, accessibility auditor, and performance auditor.
+- [x] Keep Premium Frontend Director independent and optional.
+- [ ] Validate agent discovery and delegation from the Core Director.
+- [ ] Evaluate the team with reproducible frontend fixtures.
 
 ## M3 — Additional domain teams
 
@@ -50,14 +51,15 @@ Implement incrementally, with distinct responsibilities and tests:
 
 ## M5 — Optional skill ecosystem
 
-- [ ] Publish independent first-party skill plugins where they add distinct value.
+- [x] Publish initial first-party frontend quality, design review, and accessibility skill plugins.
 - [ ] Document third-party skill integrations without copying or auto-installing them.
 - [ ] Test Premium Frontend Director as an optional independent companion.
 - [ ] Document compatibility, installation scope, and fallback behavior.
 
 ## M6 — Evaluation and release
 
-- [ ] Build repeatable baseline-versus-agent-assisted evaluation fixtures.
+- [x] Define baseline-versus-agent-assisted evaluation methodology.
+- [ ] Build repeatable evaluation fixtures and automated checks.
 - [ ] Publish transparent results, including failures and limitations.
 - [ ] Add CI validation for manifests, agent frontmatter, and package structure.
 - [ ] Publish installation and contribution documentation.
